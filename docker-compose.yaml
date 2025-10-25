@@ -1,0 +1,22 @@
+services:
+  postgres:
+    container_name: postgres-spring-boot
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: marios
+      POSTGRES_PASSWORD: pass
+      PGDATA: /data/postgres
+    volumes:
+      - postgresDB:/data/postgres
+    ports:
+      - "5332:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+volumes:
+  postgresDB:
