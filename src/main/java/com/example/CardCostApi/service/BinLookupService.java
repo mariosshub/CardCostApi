@@ -4,6 +4,7 @@ import com.example.CardCostApi.dto.BinLookupApiResponseError;
 import com.example.CardCostApi.exception.BinLookupException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +25,8 @@ public class BinLookupService {
         this.apiKey = apiKey;
     }
 
-    //todo cache the bin
+    // cache the bin number and the country code returned
+    @Cacheable(value = "countryCode", key = "#bin")
     public String fetchBinInfo(String bin) {
         JsonNode node = webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -56,9 +58,9 @@ public class BinLookupService {
                 .asText(null);
 
         // if no country code exists throw an exception
-        if(countryCode == null || countryCode.isBlank())
+        if (countryCode == null || countryCode.isBlank())
             throw new BinLookupException(
-                    new BinLookupApiResponseError(404,"No country code found from BIN number lookup"),
+                    new BinLookupApiResponseError(404, "No country code found from BIN number lookup"),
                     404);
 
         return countryCode.toUpperCase();
