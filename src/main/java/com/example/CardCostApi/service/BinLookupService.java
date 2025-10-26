@@ -63,16 +63,11 @@ public class BinLookupService {
                 throw new BinLookupException(
                         new BinLookupApiResponseError(404, "No country code found from BIN number lookup"),
                         404);
-        } catch(BinLookupException e) {
-            // re-throw our custom exception
-            throw e;
         } catch(ResourceAccessException e) {
-            log.error("Bin lookup api timeout or connection error for");
+            log.error("Bin lookup api timeout or connection error");
             throw new BinLookupException(
                     new BinLookupApiResponseError(503, "Bin lookup api connection timeout or network error"),
                     503);
-        } catch(Exception e) {
-            log.error("Unexpected error while fetching bin info");
         }
         return countryCode.toUpperCase();
     }
