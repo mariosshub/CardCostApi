@@ -3,15 +3,18 @@ package com.example.CardCostApi.service;
 import com.example.CardCostApi.dto.BinLookupApiResponseError;
 import com.example.CardCostApi.exception.BinLookupException;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
+@Slf4j
 public class BinLookupService {
     private final RestTemplate restTemplate;
     private final String binTableUrl;
@@ -30,34 +33,47 @@ public class BinLookupService {
     // cache the bin number and the country code returned
     @Cacheable(value = "countryCode", key = "#bin")
     public String fetchBinInfo(String bin) {
-        // The uri with the url path and api key as query param
-        String url = UriComponentsBuilder
-                .fromUriString(binTableUrl)
-                .pathSegment(bin)
-                .queryParam("api_key", apiKey)
-                .toUriString();
+        String countryCode = "";
 
-        ResponseEntity<JsonNode> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                JsonNode.class
-        );
-        JsonNode node = response.getBody();
+        try {
+            // Construct uri with the url path and api key as query param
+            String url = UriComponentsBuilder
+                    .fromUriString(binTableUrl)
+                    .pathSegment(bin)
+                    .queryParam("api_key", apiKey)
+                    .toUriString();
 
-        // extract the country code from the json
-        String countryCode = node
-                .path("data")
-                .path("country")
-                .path("code")
-                .asText(null);
+            ResponseEntity<JsonNode> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    JsonNode.class
+            );
+            JsonNode node = response.getBody();
 
-        // if no country code exists throw an exception
-        if (countryCode == null || countryCode.isBlank())
+            // extract the country code from the json
+            countryCode = node
+                    .path("data")
+                    .path("country")
+                    .path("code")
+                    .asText("");
+
+            // if no country code exists throw an exception
+            if (countryCode.isBlank())
+                throw new BinLookupException(
+                        new BinLookupApiResponseError(404, "No country code found from BIN number lookup"),
+                        404);
+        } catch(BinLookupException e) {
+            // re-throw our custom exception
+            throw e;
+        } catch(ResourceAccessException e) {
+            log.error("Bin lookup api timeout or connection error for");
             throw new BinLookupException(
-                    new BinLookupApiResponseError(404, "No country code found from BIN number lookup"),
-                    404);
-
+                    new BinLookupApiResponseError(503, "Bin lookup api connection timeout or network error"),
+                    503);
+        } catch(Exception e) {
+            log.error("Unexpected error while fetching bin info");
+        }
         return countryCode.toUpperCase();
     }
 }
