@@ -5,50 +5,45 @@ import com.example.CardCostApi.exception.BinLookupException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class BinLookupService {
-    private final WebClient webClient;
+    private final RestTemplate restTemplate;
+    private final String binTableUrl;
     private final String apiKey;
 
-    // construction injection of webClient and values from .properties file
-    public BinLookupService(WebClient.Builder webClientBuilder,
-                            @Value("${bin_api.url}") String binTableUrl,
-                            @Value("${bin_api.key}") String apiKey) {
-        this.webClient = webClientBuilder.baseUrl(binTableUrl).build();
+    // constructor injection of the api url and api key values, from application.properties
+    public BinLookupService(
+            RestTemplate restTemplate,
+            @Value("${bin.api.url}") String binTableUrl,
+            @Value("${bin.api.key}") String apiKey) {
+        this.restTemplate = restTemplate;
+        this.binTableUrl = binTableUrl;
         this.apiKey = apiKey;
     }
 
     // cache the bin number and the country code returned
     @Cacheable(value = "countryCode", key = "#bin")
     public String fetchBinInfo(String bin) {
-        JsonNode node = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .pathSegment(bin)
-                        .queryParam("api_key", apiKey)
-                        .build()
-                )
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse ->
-                        clientResponse.bodyToMono(BinLookupApiResponseError.class)
-                                .defaultIfEmpty(new BinLookupApiResponseError())
-                                .flatMap(error ->
-                                        Mono.error(new BinLookupException(error, clientResponse.statusCode().value()))
-                                )
-                )
-                .bodyToMono(JsonNode.class)
-//                .cache() todo check what cache can do
-                .block(Duration.ofSeconds(5)); // block makes it a synchronous call... todo make it non blocking maybe??
+        // The uri with the url path and api key as query param
+        String url = UriComponentsBuilder
+                .fromUriString(binTableUrl)
+                .pathSegment(bin)
+                .queryParam("api_key", apiKey)
+                .toUriString();
 
-        if (node == null) {
-            throw new BinLookupException(new BinLookupApiResponseError(), 404);
-        }
+        ResponseEntity<JsonNode> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                JsonNode.class
+        );
+        JsonNode node = response.getBody();
 
         // extract the country code from the json
         String countryCode = node
