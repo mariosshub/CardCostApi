@@ -2,6 +2,7 @@ package com.example.CardCostApi.controller;
 
 import com.example.CardCostApi.dto.CardCostRequest;
 import com.example.CardCostApi.dto.CardCostResponse;
+import com.example.CardCostApi.dto.GenericApiResponse;
 import com.example.CardCostApi.service.CardCostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ public class CardCostController {
     private final CardCostService cardCostService;
 
     @PostMapping("payment-cards-cost")
-    public ResponseEntity<CardCostResponse> getPaymentCardCost(@RequestBody @Valid CardCostRequest cardCostRequest) {
+    public ResponseEntity<GenericApiResponse<CardCostResponse>> getPaymentCardCost(
+            @RequestBody @Valid CardCostRequest cardCostRequest) {
         CardCostResponse cardCostResponse = cardCostService.getClearingCostByCardNumber(cardCostRequest.card_number());
-        return new ResponseEntity<>(cardCostResponse, HttpStatus.OK);
+        return new ResponseEntity<>(GenericApiResponse.success(cardCostResponse), HttpStatus.OK);
     }
 }
