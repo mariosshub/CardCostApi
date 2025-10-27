@@ -1,6 +1,7 @@
 package com.example.CardCostApi.controller;
 
 import com.example.CardCostApi.dto.ClearingCostRequest;
+import com.example.CardCostApi.dto.GenericApiResponse;
 import com.example.CardCostApi.model.ClearingCost;
 import com.example.CardCostApi.service.ClearingCostService;
 import jakarta.validation.Valid;
@@ -18,31 +19,39 @@ public class ClearingCostController {
     private final ClearingCostService clearingCostService;
 
     @GetMapping()
-    public ResponseEntity<List<ClearingCost>> findAllClearingCosts() {
-        return new ResponseEntity<>(clearingCostService.findAll(), HttpStatus.OK);
+    public ResponseEntity<GenericApiResponse<List<ClearingCost>>> findAllClearingCosts() {
+        GenericApiResponse<List<ClearingCost>> response = GenericApiResponse.success(clearingCostService.findAll());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ClearingCost> findClearingCostById(@PathVariable("id") String countryCode) {
-        return new ResponseEntity<>(clearingCostService.findById(countryCode), HttpStatus.OK);
+    public ResponseEntity<GenericApiResponse<ClearingCost>> findClearingCostById(@PathVariable("id") String countryCode) {
+        GenericApiResponse<ClearingCost> response =
+                GenericApiResponse.success(clearingCostService.findById(countryCode));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     @PostMapping()
-    public ResponseEntity<Void> createClearingCost(@RequestBody @Valid ClearingCostRequest clearingCostRequest) {
+    public ResponseEntity<GenericApiResponse<Object>> createClearingCost(@RequestBody @Valid ClearingCostRequest clearingCostRequest) {
         clearingCostService.createCost(clearingCostRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        GenericApiResponse<Object> response = GenericApiResponse.success(HttpStatus.CREATED.value(),
+                "Successfully created clearing cost");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ResponseEntity<Void> updateClearingCost(@RequestBody @Valid ClearingCostRequest clearingCostRequest) {
+    public ResponseEntity<GenericApiResponse<Object>> updateClearingCost(@RequestBody @Valid ClearingCostRequest clearingCostRequest) {
         clearingCostService.updateCost(clearingCostRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        GenericApiResponse<Object> response = GenericApiResponse.success(HttpStatus.CREATED.value(),
+                "Successfully updated clearing cost");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteClearingCost(@PathVariable("id") String countryCode) {
+    public ResponseEntity<GenericApiResponse<Object>> deleteClearingCost(@PathVariable("id") String countryCode) {
         clearingCostService.deleteCost(countryCode);
-        return new ResponseEntity<>(HttpStatus.OK);
+        GenericApiResponse<Object> response = GenericApiResponse.success(HttpStatus.OK.value(),
+                "Successfully deleted clearing cost");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
