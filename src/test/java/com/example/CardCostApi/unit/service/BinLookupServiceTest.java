@@ -42,7 +42,6 @@ class BinLookupServiceTest {
     @DisplayName("fetchBinInfo")
     class FetchBinInfo {
         @Test
-        @DisplayName("shouldReturnCountryCodeWhenBinLookupSuccessful")
         void shouldReturnCountryCodeWhenBinLookupSuccessful() throws JsonProcessingException {
             // Given
             String bin = "123456";
@@ -72,7 +71,6 @@ class BinLookupServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenCountryCodeMissingOrIsBlank")
         void shouldThrowExceptionWhenCountryCodeMissingOrIsBlank() throws JsonProcessingException {
             // Given
             String bin = "123456";
@@ -104,8 +102,7 @@ class BinLookupServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenResourceAccessExceptionOccurs")
-        void shouldThrowExceptionWhenResourceAccessExceptionOccurs() throws JsonProcessingException {
+        void shouldThrowExceptionWhenResourceAccessExceptionOccurs(){
             // Given
             String bin = "123456";
 

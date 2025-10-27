@@ -38,7 +38,6 @@ class ClearingCostServiceTest {
     @DisplayName("findAll")
     class FindAll {
         @Test
-        @DisplayName("shouldReturnAllClearingCosts")
         void shouldReturnAllClearingCosts() {
             //Given
             List<ClearingCost> expectedCosts = Arrays.asList(
@@ -64,7 +63,6 @@ class ClearingCostServiceTest {
     @DisplayName("findById")
     class FindById {
         @Test
-        @DisplayName("shouldReturnClearingCostFound")
         void shouldReturnClearingCostFound() {
             //Given
             String countryCode = "GR";
@@ -84,7 +82,6 @@ class ClearingCostServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenCountryCodeNotFound")
         void shouldThrowExceptionWhenCountryCodeNotFound() {
             // Given
             String countryCode = "FR";
@@ -104,7 +101,6 @@ class ClearingCostServiceTest {
     @DisplayName("createCost")
     class CreateCost {
         @Test
-        @DisplayName("shouldCreateClearingCost")
         void shouldCreateClearingCost() {
             // Given
             String countryCode = "GR";
@@ -130,7 +126,6 @@ class ClearingCostServiceTest {
     @DisplayName("updateCost")
     class UpdateCost {
         @Test
-        @DisplayName("shouldUpdateExistingClearingCost")
         void shouldUpdateExistingClearingCost() {
             // Given
             String countryCode = "GR";
@@ -156,7 +151,6 @@ class ClearingCostServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenUpdatingNonExistentCountryCode")
         void shouldThrowExceptionWhenUpdatingNonExistentCountryCode() {
             // Given
             String countryCode = "FR";
@@ -179,7 +173,6 @@ class ClearingCostServiceTest {
     @DisplayName("deleteCost")
     class DeleteCost {
         @Test
-        @DisplayName("shouldDeleteExistingClearingCost")
         void shouldDeleteExistingClearingCost() {
             // Given
             String countryCode = "GR";
@@ -196,7 +189,6 @@ class ClearingCostServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenDeletingNonExistentCountryCode")
         void shouldThrowExceptionWhenDeletingNonExistentCountryCode() {
             // Given
             String countryCode = "FR";

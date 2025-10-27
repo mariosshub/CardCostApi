@@ -55,7 +55,6 @@ public class CardCostIntegrationTest {
     }
 
     @Test
-    @DisplayName("shouldReturnCorrectClearingCostForUSCard")
     void shouldReturnCorrectClearingCostForUSCard() throws Exception {
         // Given
         String cardNumber = "123456789123";
@@ -92,7 +91,6 @@ public class CardCostIntegrationTest {
     }
 
     @Test
-    @DisplayName("shouldReturnOthersClearingCostWhenCountryCodeIsNotInDB")
     void shouldReturnOthersClearingCostWhenCountryCodeIsNotInDB() throws Exception {
         // Given
         String cardNumber = "1111110000";
@@ -129,7 +127,6 @@ public class CardCostIntegrationTest {
     }
 
     @Test
-    @DisplayName("shouldHandleBinLookupApiExceptionIfBinAPiDoesntReturnCountryCode")
     void shouldHandleBinLookupApiExceptionIfBinAPiDoesntReturnCountryCode() throws Exception {
         // Given
         String cardNumber = "2000000000";

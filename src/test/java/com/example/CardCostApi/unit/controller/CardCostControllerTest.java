@@ -38,7 +38,6 @@ class CardCostControllerTest {
     @DisplayName("getPaymentCardCost")
     class GetPaymentCardCost {
         @Test
-        @DisplayName("shouldReturnCardCostWhenValidCardNumberProvided")
         void shouldReturnCardCostWhenValidCardNumberProvided() throws Exception {
             // Given
             String cardNumber = "1234123412341234";
@@ -61,7 +60,6 @@ class CardCostControllerTest {
         }
 
         @Test
-        @DisplayName("shouldReturnBadRequestWhenCardNumberIsNotValid")
         void shouldReturnBadRequestWhenCardNumberIsNotValid() throws Exception {
             // Given
             String cardNumber = "";
@@ -80,7 +78,6 @@ class CardCostControllerTest {
         }
 
         @Test
-        @DisplayName("shouldReturnBadRequestWhenCardNumberIsNull")
         void shouldReturnBadRequestWhenCardNumberIsNull() throws Exception {
             // Given
             CardCostRequest cardCostRequest = new CardCostRequest(null);
@@ -98,7 +95,6 @@ class CardCostControllerTest {
         }
 
         @Test
-        @DisplayName("shouldHandleTheCardCostServiceExceptionWhenThrown")
         void shouldHandleTheCardCostServiceExceptionWhenThrown() throws Exception {
             // Given
             String cardNumber = "1234123412341234";
@@ -117,7 +113,6 @@ class CardCostControllerTest {
         }
 
         @Test
-        @DisplayName("shouldHandleTheBinLookupApiExceptionWhenThrown")
         void shouldHandleTheBinLookupApiExceptionWhenThrown() throws Exception {
             // Given
             String cardNumber = "1234123412341234";

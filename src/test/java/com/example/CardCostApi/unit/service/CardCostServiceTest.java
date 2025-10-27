@@ -35,7 +35,6 @@ class CardCostServiceTest {
     @DisplayName("getClearingCostByCardNumber")
     class GetClearingCostByCardNumber {
         @Test
-        @DisplayName("shouldReturnClearingCostWhenCountryCodeFoundInDb")
         void shouldReturnClearingCostWhenCountryCodeFoundInDb() {
             // Given
             String cardNumber = "1234123412341234";
@@ -60,7 +59,6 @@ class CardCostServiceTest {
         }
 
         @Test
-        @DisplayName("shouldReturnClearingCostOfOthersWhenCountryNotFound")
         void shouldReturnClearingCostOfOthersWhenCountryNotFound() {
             // Given
             String cardNumber = "1234123412341234";
@@ -85,7 +83,6 @@ class CardCostServiceTest {
         }
 
         @Test
-        @DisplayName("shouldThrowExceptionWhenOthersCostNotFound")
         void shouldThrowExceptionWhenOthersCostNotFound() {
             // Given
             String cardNumber = "1234123412341234";
@@ -104,7 +101,5 @@ class CardCostServiceTest {
             // Then
             assertEquals("No clearing cost found", exception.getMsg());
         }
-
     }
-
 }
