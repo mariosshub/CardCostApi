@@ -23,8 +23,8 @@ public class BinLookupService {
     // constructor injection of the api url and api key values, from application.properties
     public BinLookupService(
             RestTemplate restTemplate,
-            @Value("${bin.api.url}") String binTableUrl,
-            @Value("${bin.api.key}") String apiKey) {
+            @Value("${bin_api.url}") String binTableUrl,
+            @Value("${bin_api.key}") String apiKey) {
         this.restTemplate = restTemplate;
         this.binTableUrl = binTableUrl;
         this.apiKey = apiKey;
