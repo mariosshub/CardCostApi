@@ -9,6 +9,10 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 import java.net.URI;
 
+/**
+ * Handles common http errors from RestTemplate
+ * and throws the custom-made BinLookupException
+ */
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -17,6 +21,16 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         return response.getStatusCode().isError();
     }
 
+    /**
+     * Parses responses with error and tries to map the error response body
+     * If parsing fails then return a custom BinLookupException with 500 status code
+     * and a custom message.
+     *
+     * @param url
+     * @param method
+     * @param response
+     * @throws IOException
+     */
     @Override
     public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
         if (response.getStatusCode().isError()) {

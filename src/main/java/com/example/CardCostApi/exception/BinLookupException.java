@@ -5,6 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Handles exception thrown from the Bin lookup service
+ */
 @EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 @Getter

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Setter
 public class ClearingCost {
     @Id
-    @Column(length = 3) // contains country codes as US, GR and also OTH for handling non-listed countries
+    @Column(length = 3)
     private String countryCode;
 
     @Column(nullable = false)

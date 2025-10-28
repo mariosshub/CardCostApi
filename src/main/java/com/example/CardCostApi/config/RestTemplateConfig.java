@@ -10,12 +10,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Rest template configurations
+ */
 @Configuration
 @Slf4j
 public class RestTemplateConfig {
     /**
-     * HttpClient bean with connection pooling
-     * Spring will automatically close resource on shutdown
+     * HttpClient bean configured with connection pooling
+     * Spring will automatically close resource on shutdown with the use of destroyMethod
+     *
      * @return httpClient
      */
     @Bean(destroyMethod = "close")
@@ -28,12 +32,15 @@ public class RestTemplateConfig {
 
         return HttpClients.custom()
                 .setConnectionManager(connectionManager)
-                .setConnectionManagerShared(false) // the connection manager is closed by httpClient
+                // the connection manager is closed by httpClient
+                .setConnectionManagerShared(false)
                 .build();
     }
 
     /**
-     * RestTemplate with timeout configurations and
+     * RestTemplate configured with timeout and connection values
+     * and a custom error handler
+     *
      * @param httpClient
      * @return restTemplate
      */

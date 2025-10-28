@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * global exception handling ensure all responses returned as JSON format
+ * Global exception handling
+ * Ensure all responses return a responseEntity
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {

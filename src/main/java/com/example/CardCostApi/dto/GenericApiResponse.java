@@ -5,6 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Generic wrapper used for returning a consistent api response
+ * Provides helper methods for success and error responses
+ *
+ * @param <T>
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
