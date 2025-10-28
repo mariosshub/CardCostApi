@@ -21,13 +21,13 @@
 ### Resolve card cost
 - POST on `/api/payment-cards-cost`
 - Request Body
-```bash
+```json
 {
     card_number: "4242424242424242"
 }
 ```
 - Response (200)
-```bash
+```json
 {
     "status": 200,
     "message": "SUCCESS",
@@ -38,7 +38,7 @@
 }
 ```
 - Response (400) Bad Request Validation Failed
-```bash
+```json
 {
     "status": 400,
     "message": "Validation Failed",
@@ -48,7 +48,7 @@
 }
 ```
 - Response (404) Not Found
-```bash
+```json
 {
     "status": 404,
     "message": "No clearing cost found",
@@ -56,7 +56,7 @@
 }
 ```
 - Response (404) Not Found (If there is an error from bin lookup service)
-```bash
+```json
 {
     "status": 404,
     "message": "No country code found from BIN number lookup",
@@ -64,7 +64,7 @@
 }
 ```
 - Response (503) Service Unavailable (Bin lookup api overloaded or down)
-```bash
+```json
 {
     "status": 503,
     "message": "Bin lookup api connection timeout or network error",
@@ -76,14 +76,14 @@
 #### Create clearing cost
 - POST on `/api/clearingCosts`
 - Request Body
-```bash
+```json
 {
     "countryCode": "GR",
     "cost": "5.00"
 }
 ```
 - Response (201) Created
-```bash
+```json
 {
     "status": 201,
     "message": "Successfully created clearing cost"
@@ -92,7 +92,7 @@
 #### Read all clearing costs
 - GET on `/api/clearingCosts`
 - Response (200) OK
-```bash
+```json
 {
     "status": 200,
     "message": "SUCCESS",
@@ -111,18 +111,18 @@
 #### Read clearing cost by given countryCode
 - GET on `/api/clearingCosts/GR`
 - Response (200) OK
-```bash
+```json
 {
     "status": 200,
     "message": "SUCCESS",
     "data": {
-        "countryCode": "US",
-        "cost": 5.00
+        "countryCode": "GR",
+        "cost": 10.00
      }
 }
 ```
 - Response (404) Not Found
-```bash
+```json
 {
     "status": 404,
     "message": "No such country code found",
@@ -132,14 +132,14 @@
 #### Update clearing cost
 - PUT on `/api/clearingCosts`
 - Request body
-```bash
+```json
 {
     "countryCode": "GR",
     "cost": "5.00"
 }
 ```
 - Response (201) Created
-```bash
+```json
 {
     "status": 201,
     "message": "Successfully updated clearing cost",
@@ -149,7 +149,7 @@
 #### Delete a clearing cost by countryCode
 - DELETE on `/api/clearingCosts/US`
 - Response (200) OK
-```bash
+```json
 {
     "status": 200,
     "message": "Successfully deleted clearing cost",
@@ -157,7 +157,7 @@
 }
 ```
 - Response (404) Not Found
-```bash
+```json
 {
     "status": 404,
     "message": "No such country code found",
@@ -170,7 +170,7 @@ The application reads configuration values from an .env file inside project's ma
 These configurations are used in application.properties and docker-compose.yaml file.
 
 ### .env ###
-```bash
+```plaintext
 SPRING_DATASOURCE_URL: <jdbc_datasource_url>
 SPRING_DATASOURCE_USERNAME: <db_username>
 SPRING_DATASOURCE_PASSWORD: <db_password>
@@ -191,7 +191,7 @@ CardCostApi
 └── pom.xml
 ```
 4. Run `docker-compose up --build`
-```
+```plaintext
 - Builds the card cost api image from the DockerFile run all tests and expose the api at `http://localhost:8080`
 - Starts a PostgreSQL image and configures the clearing cost Database
 - Starts adminer an interface for managing the PostgreSQL
