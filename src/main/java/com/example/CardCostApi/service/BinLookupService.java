@@ -13,6 +13,10 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * BinLookupService is responsible for calling the external api for bin lookup
+ * and return the country code.
+ */
 @Service
 @Slf4j
 public class BinLookupService {
@@ -20,7 +24,12 @@ public class BinLookupService {
     private final String binTableUrl;
     private final String apiKey;
 
-    // constructor injection of the api url and api key values, from application.properties
+    /**
+     * Construct a new BinLookupService with the given dependencies
+     * @param restTemplate the RestTemplate used to make HTTP requests
+     * @param binTableUrl the bin api base url, injected from application.properties
+     * @param apiKey the apiKey used for authenticating requests, injected from application.properties
+     */
     public BinLookupService(
             RestTemplate restTemplate,
             @Value("${bin_api.url}") String binTableUrl,
@@ -30,7 +39,13 @@ public class BinLookupService {
         this.apiKey = apiKey;
     }
 
-    // cache the bin number and the country code returned
+    /**
+     * Fetches BIN information from the external api call and extracts the associated country code
+     * Caches the result with Spring's cache abstraction to reduce future API calls for the same BIN.
+     *
+     * @param bin the BIN number (first 6 digits of a card number) to look up
+     * @return countryCode in uppercase (e.g., "US", "GR")
+     */
     @Cacheable(value = "countryCode", key = "#bin")
     public String fetchBinInfo(String bin) {
         String countryCode = "";
@@ -63,7 +78,8 @@ public class BinLookupService {
                 throw new BinLookupException(
                         new BinLookupApiResponseError(404, "No country code found from BIN number lookup"),
                         404);
-        } catch(ResourceAccessException e) {
+        } catch (ResourceAccessException e) {
+            // Handle timeouts or network errors
             log.error("Bin lookup api timeout or connection error");
             throw new BinLookupException(
                     new BinLookupApiResponseError(503, "Bin lookup api connection timeout or network error"),

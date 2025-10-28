@@ -10,19 +10,26 @@ import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+/**
+ * Seeds the database with initial clearing cost data
+ * Runs when application starts unless its under test profile
+ */
 @Configuration
 @Slf4j
-@Profile("!test") // Do not run in test profile
+@Profile("!test")
 public class DataInitializer {
 
-    // Spring application context is fully initialized
-    // Seed data to the clearing cost table with the application runner run method.
+    /**
+     * Application runner executes after full spring context is initialized
+     *
+     * @param clearingCostRepository
+     * @return
+     */
     @Bean
-    public ApplicationRunner initDBTable (ClearingCostRepository clearingCostRepository) {
+    public ApplicationRunner initDBTable(ClearingCostRepository clearingCostRepository) {
         return args -> {
             log.info("DataInitializer: Checking if ClearingCost table contains data...");
-            if(clearingCostRepository.count() == 0) {
+            if (clearingCostRepository.count() == 0) {
                 List<ClearingCost> initialClearingCosts = List.of(
                         new ClearingCost("US", BigDecimal.valueOf(5.00)),
                         new ClearingCost("GR", BigDecimal.valueOf(15.00)),

@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CardCostController {
     private final CardCostService cardCostService;
 
+    /**
+     * Return clearing cost of the given payment card
+     * @param cardCostRequest request DTO containing the PAN number
+     * @return CardCostResponse wrapped in GenericApiResponse
+     */
     @PostMapping("payment-cards-cost")
     public ResponseEntity<GenericApiResponse<CardCostResponse>> getPaymentCardCost(
             @RequestBody @Valid CardCostRequest cardCostRequest) {

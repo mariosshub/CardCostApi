@@ -3,6 +3,9 @@ package com.example.CardCostApi.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+/**
+ * A DTO representing the error payload object returned by the external API
+ */
 @NoArgsConstructor
 @Getter
 @Setter
