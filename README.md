@@ -9,13 +9,15 @@
    
 ## Technologies Used
 - Language: Java 21
-- Maven: For building the application and depedency management
-- Framework: Spring Boot
-- Caffeine Cache: Used to efficiently cache BIN lookup results and improve performance
-- RestTemplate: Spring’s built-in HTTP client for making external API calls to the BIN lookup service
+- Framework: Spring Boot 3.5.7
+- Maven: Used for building the application, depedency management and packaging
+- Spring Web: For building RESTful API endpoints
+- Spring JPA: For mapping java entities to relational tables
+- Caffeine Cache: Used to efficiently cache BIN lookup results and improve latency by reducing the external api calls
+- RestTemplate: HTTP client for making external API calls to the BIN lookup service, configured with connection pooling and read/connect timeouts
 - PostgreSQL Database: Used as the primary database for persisting the clearing-cost table
-- H2 Databse: An in-memory database utilized for integration and unit testing
-- Docker: For containerization
+- H2 Database: An in-memory database utilized for integration and unit testing
+- Docker: Used to containerize the application
 
 ## Endpoints
 ### Resolve card cost
