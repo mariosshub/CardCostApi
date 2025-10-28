@@ -23,7 +23,7 @@
 - Request Body
 ```json
 {
-    card_number: "4242424242424242"
+    "card_number": "4242424242424242"
 }
 ```
 - Response (200)
