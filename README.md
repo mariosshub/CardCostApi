@@ -171,7 +171,7 @@ These configurations are used in application.properties and docker-compose.yaml 
 
 ### .env ###
 ```plaintext
-SPRING_DATASOURCE_URL: <jdbc_datasource_url>
+SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/<db_username>
 SPRING_DATASOURCE_USERNAME: <db_username>
 SPRING_DATASOURCE_PASSWORD: <db_password>
 SPRING_DB_NAME: <db_name>
