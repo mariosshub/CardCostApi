@@ -10,6 +10,7 @@ COPY pom.xml .
 # Copy source code
 COPY src ./src
 
+# Clean the workspace, compile everything, run all tests
 RUN mvn clean verify
 
 FROM openjdk:21-jdk AS runner

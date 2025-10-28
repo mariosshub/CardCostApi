@@ -1,6 +1,6 @@
 services:
   api:
-    container_name: card_cost_api
+    container_name: card-cost-spring-app
     build: .
     ports:
       - "8080:8080"
